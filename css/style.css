@@ -1,0 +1,11 @@
+.wrapper{
+	width: 400px;
+	height: 100px;
+}
+.panel{
+	margin-bottom: 0;
+}
+/* Your ip */
+.ip-body{
+	font-size: 15px;
+}
