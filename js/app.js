@@ -14,7 +14,6 @@ USER.prototype.setView = function(user){
 	$('#myip .ip').text(user)
 }
 
-
 function SITE(){
 	this.Container = $('#myip .website-ip');
 	this.get();
@@ -51,8 +50,6 @@ SITE.prototype.requestUpdate = function(){
 	 // tabId is the current active tab in this window
     var host = background.tabToHost[tabId] || '';
     var ip = host && background.hostToIP[host] || 'N/A';
-    // Now, do something. For example:
-    //document.getElementById('host').textContent = host;
     this.Container.text(ip);
 }
 
@@ -75,7 +72,22 @@ function IP(){
 IP.prototype.init = function(){
 	this.user 	 = new USER();
 	this.website = new SITE();
+	this.copyButtons();
+}
+
+IP.prototype.copy = function(str) {
+    var sandbox = $('#sandbox').val(str).select();
+    document.execCommand('copy');
+    sandbox.val('');
+}
+
+IP.prototype.copyButtons = function(){
+	var _self = this;
+	$('.copy').click(function(){
+		_self.copy($('.'+$(this).data('target')).text()); 
+	})
 }
 
 
 var IPKIT = new IP();
+
