@@ -1,5 +1,5 @@
 var USERIP, tabId;
-
+var background = chrome.extension.getBackgroundPage();
 
 function USER(){
 	this.Container = $('#myip .ip');
@@ -7,14 +7,7 @@ function USER(){
 }
 
 USER.prototype.get = function(){
-	var user, _self=this;
-	if(!USERIP)
-		$.getJSON( "https://jsonip.appspot.com/",
-	        function(data){
-	        	USERIP = data.ip;
-	        	_self.setView(USERIP)
-	        }
-	    );
+	this.setView(background.IP);
 }
 
 USER.prototype.setView = function(user){
@@ -24,7 +17,6 @@ USER.prototype.setView = function(user){
 
 function SITE(){
 	this.Container = $('#myip .website-ip');
-	this.background = chrome.extension.getBackgroundPage();
 	this.get();
 }
 
@@ -56,10 +48,9 @@ SITE.prototype.update = function(){
 
 
 SITE.prototype.requestUpdate = function(){
-	console.log('a:'+tabId);
 	 // tabId is the current active tab in this window
-    var host = this.background.tabToHost[tabId] || '';
-    var ip = host && this.background.hostToIP[host] || 'N/A';
+    var host = background.tabToHost[tabId] || '';
+    var ip = host && background.hostToIP[host] || 'N/A';
     // Now, do something. For example:
     //document.getElementById('host').textContent = host;
     this.Container.text(ip);

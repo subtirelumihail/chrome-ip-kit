@@ -1,5 +1,29 @@
 var tabToHost = {};
 var hostToIP = {};
+var IP;
+
+function USERIP(){
+    this.get();
+}
+
+USERIP.prototype.get = function(){
+    var user, _self=this;
+    if(!IP){
+        var x = new XMLHttpRequest();
+        x.open('GET', 'https://jsonip.appspot.com/');
+        x.onload = function() {
+            var result = JSON.parse(x.responseText);
+            if (result && result.ip) {
+                IP = result.ip;
+                return IP;
+             }
+         };
+         x.send();  
+    }
+    else return IP;
+}
+
+var USER = new USERIP();
 
 function processUrl(tabId, url) {
     // Get the host part of the URL. 
@@ -15,7 +39,6 @@ function processUrl(tabId, url) {
         x.open('GET', 'http://www.fileformat.info/tool/rest/dns.json?q=' + host);
         x.onload = function() {
             var result = JSON.parse(x.responseText);
-            console.log(result.answer.values[0].address);
             if (result && result.answer && result.answer.values && result.answer.values[0]) {
                 // Lookup successful, save address
                 hostToIP[host] = result.answer.values[0].address;
